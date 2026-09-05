@@ -1,0 +1,12 @@
+---
+description: Assumption Inspector project rules
+alwaysApply: true
+---
+
+Read `AGENTS.md` at the repo root before writing any code. It is the canonical
+instruction set for this repo — scope fence, hard constraints, architecture,
+data model, and definition of done.
+
+Two rules that are violated most often:
+1. Build only the golden path. Everything else is out of scope.
+2. Never claim affiliation with Hawaiʻi Tech Week; never invent event details.

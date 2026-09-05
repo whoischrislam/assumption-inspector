@@ -1,0 +1,35 @@
+/*
+ * Design tokens only. Component styles live alongside their components
+ * or are appended here as the build progresses. See AGENTS.md for the palette rationale.
+ */
+:root {
+  --paper: #f6f2ea;
+  --graphite: #25231f;
+  --cobalt: #335cff;
+  --marker-red: #ed4b3d;
+  --question-yellow: #f6d762;
+  --verdict-green: #2f9e68;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--graphite);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}

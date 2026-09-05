@@ -23,3 +23,7 @@ One line per decision. Dated, with the reason. Don't re-debate unless evidence c
   three entry points.
 - **Fictionalized event page, permanent non-affiliation label.** Avoids implying
   a real redesign or endorsement.
+- **Build on site in Cursor; no pre-built hero.** Not enough time before
+  check-in to build the hero properly, and a rushed one is worse than none. The
+  consequence: the 9:40 Grok run uses a text description of the intended
+  "before" state rather than a screenshot. Written out in `docs/ONSITE.md`.

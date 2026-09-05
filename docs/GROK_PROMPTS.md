@@ -92,9 +92,10 @@ Up to three decisions that must not be guessed.
 State the smallest component or visual region that should change.
 ```
 
-If the bot can't inspect the screenshot, paste a textual description of the page
-plus the direction. That is fine — the project is about how you **review its
-interpretation**, not about its vision capability.
+**You will not have a screenshot on site** — the hero is being built after this
+run. Use the ready-made text description in `ONSITE.md` instead. That is fine:
+the project is about how you **review its interpretation**, not about its vision
+capability.
 
 ---
 

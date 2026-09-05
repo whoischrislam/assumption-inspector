@@ -77,6 +77,7 @@ AGENTS.md              canonical instructions for coding agents (read this first
 CLAUDE.md              pointer to AGENTS.md
 docs/
   PRODUCT.md           the concept, the thesis, open questions
+  ONSITE.md            copy-paste playbook for build day (open this first)
   DEMO_SCRIPT.md       lightning-round script + the golden path, step by step
   DEMO_CONTENT.md      the exact fictional event copy (the only content surface)
   GROK_PROMPTS.md      Art Director bot profile + the prompts to run

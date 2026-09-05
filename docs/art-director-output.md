@@ -1,28 +1,38 @@
-# Art Director — raw Grok Bot output
+# Art Director — raw output / provenance
 
-> Paste the bot's output here **verbatim**, unedited. This file is the provenance
-> record for `src/data/assumptions.ts`. If the fixture says something this file
-> does not, the fixture is wrong.
+> Provenance record for interpretations shown in Assumption Inspector.
+> Live runs go through `/api/interpret` (dev). Fixture lives in
+> `src/data/assumptions.ts`.
 
-**Run date:** _not yet run_
-**Bot:** Art Director (profile in `docs/GROK_PROMPTS.md`)
+**Run date:** 2026-09-05
+**Source:** Authored fixture (path B) — not a Grok Bot transcript
 
 ---
 
 ## Baseline run
 
-_(paste output here — or note "not run")_
+_(not used — skipped Grok Bot app in favor of in-app interpret + fixture)_
 
 ---
 
-## Structured run
+## Structured / fixture notes
 
-_(paste output here)_
+Four authored assumptions with stable IDs:
+
+| id | role |
+|---|---|
+| `typography` | editorial breathing room — accept |
+| `event-context` | date/place forward — accept |
+| `cta` | quieter button — accept |
+| `visual-identity` | tropical overlay — **deliberately wrong, reject** |
+
+When a live model returns the same IDs via `/api/interpret`, those statements
+replace the fixture for that session. On API failure, the fixture is used and
+the UI says so.
 
 ---
 
 ## Transcription notes
 
-_Record any place where the fixture differs from the raw output and why. Anything
-authored rather than generated must be labeled as authored — in this file and in
-the demo._
+Authored for the golden-path rejection beat. Do not present the tropical
+assumption as model output unless a live run actually produced it.

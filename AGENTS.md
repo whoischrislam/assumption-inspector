@@ -3,6 +3,7 @@
 Canonical instructions for every coding agent working in this repo (Claude Code,
 Cursor, Codex, Superset workers). `CLAUDE.md` and `.cursor/rules/` both point here.
 If you are an agent: read this file fully before writing code.
+For product shape and roadmap, also read `docs/PRD.md`.
 
 ---
 
@@ -77,37 +78,54 @@ If a change is not on the golden path, it is out of scope. Say so and stop.
 
 ```
 src/
-  App.tsx               state owner: xRayOpen, assumptions, isProposalMode, isComparing
+  brain/                CLIENT-AGNOSTIC decision layer (schema, verbs, selectors, fixture)
+    types.ts            Session, Assumption, ApprovedBrief, focus
+    verbs.ts            propose / preview / accept / reject / batch / focus / buildBrief
+    selectors.ts        active ids, visible-by-focus, highlight target
+    fixtures/           demo session
+  App.tsx               web surface: holds Session, calls verbs, UI chrome
   components/
-    EventHero.tsx       the demo page; receives boolean flags, applies CSS classes
-    AssumptionCard.tsx  one card: statement, confidence, target, action buttons
-    XRayOverlay.tsx     card layer + anchors + "Previewing N interpretations" banner
-    StagingTray.tsx     bottom tray: accepted/rejected/locked summary + export
+    EventHero.tsx       demo page + clickable target hit areas
+    AssumptionCard.tsx  statement, confidence, select, zoom, actions
+    XRayOverlay.tsx     cards + focus bar + batch bar + preview banner
+    BriefPanel.tsx      ApprovedBrief markdown/JSON export
+    StagingTray.tsx     accepted/rejected/locked summary + compare
     CompareControl.tsx  hold-to-compare before/after
   data/
-    assumptions.ts      FIXTURE — the real Grok Bot output, hand-transcribed
+    loadAssumptions.ts  PROPOSER adapter only (fixture or live LLM → Assumption[])
+    assumptions.ts      re-export shim → brain
   styles/
-    app.css             tokens + component styles
+    app.css             tokens + styles
+scripts/
+  brain.ts              terminal surface over the same verbs
 ```
 
-**State lives in `App.tsx`.** Plain `useState`. No context, no reducer, no store
-unless the state genuinely outgrows it.
+**Decision state lives in `src/brain`.** The web app holds one `Session` in
+`App.tsx` and applies verbs. Do not duplicate accept/reject/preview rules in
+components. See `docs/BRAIN.md`.
 
-### The fixture seam (important for post-hackathon work)
+**State in the web shell:** plain `useState<Session>`. No context/store until
+needed.
 
-Assumptions are a **fixture** today and a **model call** later. Keep that seam clean:
+### The fixture / proposer seam
 
-- `src/data/assumptions.ts` exports `initialAssumptions: Assumption[]` and nothing else.
-- Components must never know where assumptions came from.
-- When a live model is wired in, it swaps behind an async source function that
-  returns the same `Assumption[]`. Nothing else should have to change.
+Assumptions arrive via a **proposer** that returns `Assumption[]`:
 
-Do **not** add an API layer, env vars, or an adapter abstraction before it is
-needed. Just keep the boundary honest.
+- Fixture: `src/brain/fixtures/demoSession.ts`
+- Live (optional): `loadAssumptions()` → Vite `/api/interpret`
+
+Then `propose(session, assumptions)` loads them into the brain. Components must
+never know where assumptions came from.
+
+Do **not** add a general backend. Optional live interpret is a thin Vite
+middleware for local demos only.
 
 ---
 
 ## Data model
+
+Canonical types live in `src/brain/types.ts` (`Session`, `Assumption`,
+`ApprovedBrief`, focus/selection). Summary:
 
 ```ts
 export type AssumptionStatus =

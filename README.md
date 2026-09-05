@@ -76,17 +76,21 @@ npm run build && npm run preview
 AGENTS.md              canonical instructions for coding agents (read this first)
 CLAUDE.md              pointer to AGENTS.md
 docs/
-  PRODUCT.md           the concept, the thesis, open questions
-  ONSITE.md            copy-paste playbook for build day (open this first)
-  DEMO_SCRIPT.md       lightning-round script + the golden path, step by step
-  DEMO_CONTENT.md      the exact fictional event copy (the only content surface)
-  GROK_PROMPTS.md      Art Director bot profile + the prompts to run
-  art-director-output.md   raw Grok Bot output, pasted verbatim
+  PRD.md               living product spec (start here for product shape)
+  BRAIN.md             client-agnostic session/verbs/brief contract
+  PRODUCT.md           short thesis pointer → PRD
+  ONSITE.md            copy-paste playbook for build day
+  DEMO_SCRIPT.md       lightning-round script + the golden path
+  DEMO_CONTENT.md      the exact fictional event copy
+  GROK_PROMPTS.md      Art Director bot profile + prompts
+  art-director-output.md   provenance notes for interpretations
   DECISIONS.md         dated decision log
 src/
-  components/          EventHero, AssumptionCard, XRayOverlay, StagingTray, CompareControl
-  data/assumptions.ts  the fixture
+  brain/               schema, verbs, selectors, demo fixture
+  components/          EventHero, AssumptionCard, XRayOverlay, BriefPanel, …
+  data/loadAssumptions.ts  proposer adapter (fixture or live LLM)
   styles/app.css       tokens + styles
+scripts/brain.ts       terminal surface (`npm run brain -- …`)
 ```
 
 ## License

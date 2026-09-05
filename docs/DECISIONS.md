@@ -27,3 +27,33 @@ One line per decision. Dated, with the reason. Don't re-debate unless evidence c
   check-in to build the hero properly, and a rushed one is worse than none. The
   consequence: the 9:40 Grok run uses a text description of the intended
   "before" state rather than a screenshot. Written out in `docs/ONSITE.md`.
+
+## 2026-09-05 — live interpret (scope exception)
+
+- **Proceed with live LLM behind the button (path B), fixture as fallback.**
+  Product owner chose self-contained app with optional live interpret over
+  Grok-Bot-only provenance. Cursor/Grok Bot credits are not an app API.
+- **Vite `configureServer` middleware at `/api/interpret`, not a real backend.**
+  Keeps the key off the client in local demo (`LLM_API_KEY` in `.env`); GitHub
+  Pages stays fixture-only. OpenAI-compatible base URL so OpenAI or xAI works.
+- **Authored four-assumption fixture including deliberate tropical reject beat.**
+  Unblocks the golden path without another Grok round-trip; live model prompted
+  to keep the same four IDs and the rejectable visual-identity assumption.
+
+## 2026-09-05 — assumption brain (multi-surface foundation)
+
+- **Extract `src/brain` as the client-agnostic decision layer.** Web, terminal, and
+  future chat/MCP are adapters over one `Session` + verbs + `ApprovedBrief`.
+- **Schema-first, any agent client later.** No Grok Bot MCP in v1; remote MCP can
+  wrap the same verbs when a public URL exists.
+- **Point-and-click on the hero** (target focus) + card zoom + batch accept/reject
+  so review feels like designer selection, not only a card wall.
+- **Terminal stub (`npm run brain`)** proves the brain is not web-only via
+  `session.json`.
+
+## 2026-09-05 — PRD locked as living product reference
+
+- **Canonical product outline lives in `docs/PRD.md`.** Captures Reference
+  (prompt + visual), authorship, brief-gated implementation, git deliverables,
+  Figma-like *inspect* studio (not full edit), and modular brain/skill/CLI/studio
+  packaging. Improve the PRD in place rather than re-litigating in chat.

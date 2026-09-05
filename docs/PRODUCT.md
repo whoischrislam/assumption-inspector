@@ -1,5 +1,9 @@
 # Product notes
 
+> **Living product spec:** [PRD.md](./PRD.md) — Reference → assumptions →
+> authorship → brief → implement → git. Prefer updating the PRD over
+> re-deriving the vision in chat.
+
 ## One sentence
 
 Before an AI changes a visual design, Assumption Inspector shows what it thinks

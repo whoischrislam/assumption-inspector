@@ -1,6 +1,8 @@
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import { writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 const SYSTEM_PROMPT = `You are Art Director for Assumption Inspector.
 Return ONLY valid JSON (no markdown) with shape:
@@ -60,6 +62,8 @@ function interpretApiPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'assumption-interpret-api',
     configureServer(server) {
+      const root = server.config.root
+
       server.middlewares.use(async (req, res, next) => {
         const url = req.url?.split('?')[0] ?? ''
 
@@ -77,13 +81,36 @@ function interpretApiPlugin(env: Record<string, string>): Plugin {
           return
         }
 
-        if (!url.startsWith('/api/interpret') || req.method !== 'POST') {
-          next()
+        if (url === '/api/brief/write' && req.method === 'POST') {
+          try {
+            const raw = await readBody(req)
+            const body = JSON.parse(raw) as {
+              markdown?: string
+              json?: unknown
+            }
+            if (!body.markdown?.trim()) {
+              sendJson(res, 400, { message: 'markdown is required' })
+              return
+            }
+            const mdPath = resolve(root, 'APPROVED_BRIEF.md')
+            const jsonPath = resolve(root, 'APPROVED_BRIEF.json')
+            writeFileSync(mdPath, body.markdown, 'utf8')
+            if (body.json !== undefined) {
+              writeFileSync(
+                jsonPath,
+                JSON.stringify(body.json, null, 2) + '\n',
+                'utf8',
+              )
+            }
+            sendJson(res, 200, { path: 'APPROVED_BRIEF.md', jsonPath: 'APPROVED_BRIEF.json' })
+          } catch (err) {
+            const message = err instanceof Error ? err.message : 'Write failed'
+            sendJson(res, 500, { message })
+          }
           return
         }
 
-        // Don't treat /api/interpret/status as POST target
-        if (url !== '/api/interpret') {
+        if (url !== '/api/interpret' || req.method !== 'POST') {
           next()
           return
         }
@@ -143,7 +170,10 @@ function interpretApiPlugin(env: Record<string, string>): Plugin {
           }
           const content = completion.choices?.[0]?.message?.content
           if (!content) {
-            sendJson(res, 502, { error: 'empty_response', message: 'Empty model response' })
+            sendJson(res, 502, {
+              error: 'empty_response',
+              message: 'Empty model response',
+            })
             return
           }
 

@@ -2,12 +2,14 @@
 /**
  * Minimal terminal surface over the assumption brain.
  * Usage: npm run brain -- <list|brief|accept|reject|focus> [id]
+ *        npm run brain -- brief --write
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   accept,
+  APPROVED_BRIEF_FILENAME,
   briefToMarkdown,
   buildBrief,
   createDemoSession,
@@ -33,7 +35,18 @@ function saveSession(session: Session) {
   writeFileSync(sessionPath, JSON.stringify(session, null, 2) + '\n')
 }
 
-const [cmd, arg] = process.argv.slice(2)
+function writeBriefFiles(session: Session) {
+  const brief = buildBrief(session)
+  const mdPath = resolve(root, APPROVED_BRIEF_FILENAME)
+  const jsonPath = resolve(root, 'APPROVED_BRIEF.json')
+  writeFileSync(mdPath, briefToMarkdown(brief), 'utf8')
+  writeFileSync(jsonPath, JSON.stringify(brief, null, 2) + '\n', 'utf8')
+  return { mdPath, jsonPath, brief }
+}
+
+const argv = process.argv.slice(2)
+const [cmd, arg] = argv
+const writeFlag = argv.includes('--write')
 let session = loadSession()
 
 switch (cmd) {
@@ -50,15 +63,23 @@ switch (cmd) {
     break
 
   case 'brief': {
-    const brief = buildBrief(session)
+    const { brief, mdPath } = writeFlag
+      ? writeBriefFiles(session)
+      : { brief: buildBrief(session), mdPath: null }
     console.log(briefToMarkdown(brief))
-    console.log('\n--- JSON ---')
-    console.log(JSON.stringify(brief, null, 2))
+    if (writeFlag && mdPath) {
+      console.log(`\nWrote ${mdPath}`)
+      console.log('Wrote APPROVED_BRIEF.json')
+    } else {
+      console.log('\n--- JSON ---')
+      console.log(JSON.stringify(brief, null, 2))
+      console.log('\nTip: npm run brain -- brief --write')
+    }
     break
   }
 
   case 'accept':
-    if (!arg) {
+    if (!arg || arg === '--write') {
       console.error('Usage: npm run brain -- accept <id>')
       process.exit(1)
     }
@@ -68,7 +89,7 @@ switch (cmd) {
     break
 
   case 'reject':
-    if (!arg) {
+    if (!arg || arg === '--write') {
       console.error('Usage: npm run brain -- reject <id>')
       process.exit(1)
     }
@@ -78,7 +99,7 @@ switch (cmd) {
     break
 
   case 'focus': {
-    if (!arg) {
+    if (!arg || arg === '--write') {
       console.error(
         'Usage: npm run brain -- focus <title|meta|cta|background>',
       )
@@ -93,7 +114,7 @@ switch (cmd) {
   default:
     console.error(`Unknown command: ${cmd}`)
     console.error(
-      'Commands: list | brief | accept <id> | reject <id> | focus <target>',
+      'Commands: list | brief [--write] | accept <id> | reject <id> | focus <target>',
     )
     process.exit(1)
 }

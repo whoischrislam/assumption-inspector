@@ -38,6 +38,7 @@ import XRayOverlay from './components/XRayOverlay'
 import StagingTray from './components/StagingTray'
 import CompareControl from './components/CompareControl'
 import BriefPanel from './components/BriefPanel'
+import { writeApprovedBrief } from './data/writeBrief'
 
 const INTERPRET_PHASES = [
   'Reading the hero…',
@@ -62,6 +63,7 @@ export default function App() {
   const [isProposalMode, setIsProposalMode] = useState(false)
   const [isComparing, setIsComparing] = useState(false)
   const [briefOpen, setBriefOpen] = useState(false)
+  const [briefWriteStatus, setBriefWriteStatus] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [phase, setPhase] = useState<string | null>(null)
   const [source, setSource] = useState<LoadSource | null>(null)
@@ -142,6 +144,16 @@ export default function App() {
   function onTargetClick(target: TargetId) {
     setSession((s) => focusTarget(s, target))
     if (!xRayOpen) setXRayOpen(true)
+  }
+
+  async function persistBrief(nextSession: Session = session) {
+    const nextBrief = buildBrief(nextSession)
+    const result = await writeApprovedBrief(nextBrief)
+    if (result.ok) {
+      setBriefWriteStatus(`Wrote ${result.path} — point Claude/Codex at it.`)
+    } else {
+      setBriefWriteStatus(result.error)
+    }
   }
 
   return (
@@ -273,6 +285,8 @@ export default function App() {
             brief={brief}
             open={briefOpen}
             onToggle={() => setBriefOpen((v) => !v)}
+            writeStatus={briefWriteStatus}
+            onWriteToDisk={() => void persistBrief()}
           />
         )}
       </div>
@@ -284,9 +298,11 @@ export default function App() {
           isProposalMode={isProposalMode}
           onToggleLock={() => setSession((s) => toggleFactualLock(s))}
           onBuild={() => {
-            setSession((s) => clearAllPreviews(s))
+            const cleared = clearAllPreviews(session)
+            setSession(cleared)
             setIsProposalMode(true)
             setBriefOpen(true)
+            void persistBrief(cleared)
           }}
           compareSlot={
             <CompareControl

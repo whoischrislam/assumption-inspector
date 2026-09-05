@@ -57,3 +57,9 @@ One line per decision. Dated, with the reason. Don't re-debate unless evidence c
   (prompt + visual), authorship, brief-gated implementation, git deliverables,
   Figma-like *inspect* studio (not full edit), and modular brain/skill/CLI/studio
   packaging. Improve the PRD in place rather than re-litigating in chat.
+
+## 2026-09-05 — agent handoff via APPROVED_BRIEF.md
+
+- **Studio + CLI write `APPROVED_BRIEF.md` for Claude/Codex.** Feature-freeze the
+  visual studio for interview week; portable agent surface is the brief file plus
+  `docs/AGENT_SKILL.md`. Dev-only `/api/brief/write`; download fallback for Pages.

@@ -77,6 +77,8 @@ AGENTS.md              canonical instructions for coding agents (read this first
 CLAUDE.md              pointer to AGENTS.md
 docs/
   PRD.md               living product spec (start here for product shape)
+  IMBUE_INTERVIEW_PLAN.md  Wed/Thu interview week priorities
+  AGENT_SKILL.md       Claude/Codex brief gate (copy into agent instructions)
   BRAIN.md             client-agnostic session/verbs/brief contract
   PRODUCT.md           short thesis pointer → PRD
   ONSITE.md            copy-paste playbook for build day

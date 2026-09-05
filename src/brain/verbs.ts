@@ -172,6 +172,10 @@ export function briefToMarkdown(brief: ApprovedBrief): string {
   const lines = [
     '# Approved brief',
     '',
+    '> For Claude Code / Codex / Cursor: implement **only** the Accepted items.',
+    '> Do **not** implement anything under Rejected. Obey all Locks and Preserve lines.',
+    '> See `docs/AGENT_SKILL.md`.',
+    '',
     `Generated: ${brief.generatedAt}`,
     '',
     '## Direction',
@@ -208,12 +212,20 @@ export function briefToMarkdown(brief: ApprovedBrief): string {
   )
 
   lines.push('', '## Preserve summary')
-  for (const p of brief.preserve) {
-    lines.push(`- ${p}`)
+  if (brief.preserve.length === 0) {
+    lines.push('_None_')
+  } else {
+    for (const p of brief.preserve) {
+      lines.push(`- ${p}`)
+    }
   }
 
+  lines.push('')
   return lines.join('\n')
 }
+
+/** Filename agents should read in-repo. */
+export const APPROVED_BRIEF_FILENAME = 'APPROVED_BRIEF.md'
 
 export function focusTarget(session: Session, targetId: TargetId): Session {
   const same =

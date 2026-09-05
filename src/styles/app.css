@@ -294,6 +294,19 @@ img {
   color: var(--muted);
 }
 
+.brief-panel__status {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--verdict-green);
+  font-weight: 600;
+}
+
+.brief-panel__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .brief-panel__body {
   margin-top: 0.75rem;
   display: grid;

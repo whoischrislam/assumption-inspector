@@ -20,6 +20,7 @@ export {
   accept,
   batchAccept,
   batchReject,
+  APPROVED_BRIEF_FILENAME,
   briefToMarkdown,
   buildBrief,
   clearAllPreviews,

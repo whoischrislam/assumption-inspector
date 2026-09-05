@@ -227,10 +227,10 @@ prioritizing multi-surface coherence.
 - [x] Brain module (types, verbs, selectors, fixture)
 - [x] Studio demo: hero, X-Ray, preview, accept/reject, batch, focus, brief panel
 - [x] CLI stub (`npm run brain`)
+- [x] Auto-write `APPROVED_BRIEF.md` on approve
+- [x] Portable skill text for Claude Code / Codex / Cursor (`docs/AGENT_SKILL.md`)
 - [ ] Shared Session store (web ↔ CLI)
 - [ ] `Session.reference` = prompt + visual (schema)
-- [ ] Auto-write `APPROVED_BRIEF.md` on approve
-- [ ] Portable skill text for Claude Code / Codex / Cursor
 
 ### Next
 
@@ -262,6 +262,7 @@ prioritizing multi-surface coherence.
 | Doc | Owns |
 |---|---|
 | **This PRD** | Product shape, roadmap, non-goals |
+| `IMBUE_INTERVIEW_PLAN.md` | Time-boxed plan for Wed/Thu interview week (overrides priority until then) |
 | `BRAIN.md` | Schema/verbs contract |
 | `PRODUCT.md` | Short thesis / principles |
 | `DECISIONS.md` | Dated choices |

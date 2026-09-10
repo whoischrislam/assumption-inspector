@@ -63,3 +63,25 @@ One line per decision. Dated, with the reason. Don't re-debate unless evidence c
 - **Studio + CLI write `APPROVED_BRIEF.md` for Claude/Codex.** Feature-freeze the
   visual studio for interview week; portable agent surface is the brief file plus
   `docs/AGENT_SKILL.md`. Dev-only `/api/brief/write`; download fallback for Pages.
+
+## 2026-09-09 — oversight model: transparency by default, muting is human-authored
+
+- **Transparency ≠ interruption.** Every visual assumption the agent makes is
+  always recorded (free, no stop). Review is a *dial*, not a gate: autopilot (log
+  only) → checkpoint → co-pilot (author everything).
+- **Default = surface *every* visual assumption, block on none.** The tool never
+  decides which assumptions are "high-risk" — that judgment is exactly what we
+  don't trust the agent to make. Present them as one batch to scan, not N
+  sequential gates.
+- **Tuning is muting from a maximal default, always with human confirmation.**
+  The tool learns auto-accept rules from the human's own accept/reject history
+  ("you've accepted typography-spacing 12×; auto-accept these?") and never invents
+  a threshold. Filters are authored, not inferred.
+- **Accepted cost:** first few sessions are review-heavy before mute rules accrue.
+  Right price for not letting the tool guess taste.
+- **Value anchor:** the unit of review is the *interpretation* (pre-code, tied to
+  a live visual preview, reject = zero trace), not the diff. Optionality is the
+  delivery; the superior review unit is the moat.
+- **Surface implication:** the always-on record renders low-fi anywhere (terminal,
+  PR comment); the rich browser studio is only needed for opt-in deep review.
+  Agents integrate via one MCP server + the brief file — not per-agent plugins.

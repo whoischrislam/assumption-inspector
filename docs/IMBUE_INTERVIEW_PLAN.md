@@ -100,6 +100,7 @@ This is also how I want to ship my own site updates — intent survives into the
 | Does it work with real agents? | Brief is the contract; skill says implement only accepted — studio is the human review surface |
 | What’s the hard part? | Which assumptions deserve UI vs silent; keeping reject honest; not becoming a second Figma |
 | What would you measure? | Rework cycles, bad assumptions caught pre-PR, time to acceptable UI (tiny eval later) |
+| Doesn't reviewing every assumption become a chore? | It surfaces *every* interpretation by default — I don't let the tool decide what matters. Batch-clear the obvious; it learns what to auto-accept from my own decisions. Full authorship up front, less over time as it earns trust. Transparency is always on; the *interrupt* is a dial I tune down |
 
 ---
 

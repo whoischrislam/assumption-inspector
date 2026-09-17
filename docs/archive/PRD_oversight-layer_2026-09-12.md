@@ -9,7 +9,8 @@
 > "least-privilege credentials" issue). Star counts are distrusted (a fetched
 > 244k figure was implausible) and not used. Prior-art citations in section 6 are
 > from a grounding research pass; items without a reachable primary source are
-> marked [unverified].
+> marked [unverified]. Product-competition facts in section 3a verified 2026-09-12
+> (three parallel search passes against primary sources; per-claim labels there).
 >
 > Status of decisions: LOCKED items are settled. [CONFIRM] items are the
 > remaining punch-list to make this PRD final.
@@ -64,6 +65,49 @@ The design layer for this is an opening, not a solved problem: these runtimes'
 own hiring posts describe the product-design function as still forming, a thing
 to *establish* rather than maintain.
 
+## 3a. Competitive landscape and differentiation (verified 2026-09-12)
+
+Product competition, distinct from the runtimes this layer hooks into (section
+8). Verified against primary sources 2026-09-12; provenance labeled per claim.
+
+**Table stakes now (do not lead with these):**
+
+- *Plan-before-code* and *clarifying questions*. Claude Code, Cursor, GitHub
+  Copilot, OpenAI Codex, Devin, Google Jules, and Replit Agent all ship a plan
+  mode [official docs, 2025-2026]. Tell: Cursor 2.1's clarifying questions are
+  *skippable* and fall back silently to "best judgment" [Cursor 2.1,
+  2025-11-21]. That silent fallback is the failure this layer catches.
+- *Action approval*. HumanLayer and LangGraph `interrupt()` gate what the agent
+  will *do*, not what it *understood* [official, 2026].
+- *Post-hoc traces*. Langfuse, AgentOps sit *after* execution [official, 2026].
+
+**Contested flank (funded, coding-only).** AWS Kiro and Tessl ($125M raised,
+Index-led) generate a reviewable, AI-authored *intent artifact* for coding [Kiro
+official, 2025-07-14; Tessl funding, 2026]. Closest competitors. They produce a
+*formal spec* (EARS notation, three-phase gates) and, per Kiro's own reviewers,
+can mis-formalize genuinely ambiguous requirements. Heavy ceremony.
+
+**One true category match.** Mural's multiplayer AI synthesizes agent context
+onto a shared canvas for human review [Mural official, 2026], but as a
+whiteboard-collaboration feature, not an oversight/decision layer.
+
+**The open seam (our wedge).** No named, funded product surfaces the agent's
+*hidden assumptions and ambiguity resolutions* as a first-class, editable,
+diff-able object, distinct from the implementation plan and from a formal spec,
+at inline-agent speed, for design-to-code work. No settled category name exists
+yet. Kiro and Tessl punt on this; the inline agents skip it. Design is the
+richest soil: a design request carries more hidden assumptions per instruction
+than a code request.
+
+**Differentiation line.** Not "shows a plan" or "asks questions." It is *the
+agent's named assumptions as a reviewable artifact, distinct from the plan,
+lightweight and inline, strongest on visual/design requests.*
+
+**Caveats (not encoded as settled fact).** A stealth startup on this exact pitch
+cannot be ruled out (absence of search evidence is not proof). "Coefficient
+Giving / 36 initiatives" from the source research thread is a funder, not a
+competitor, and the count is unverified.
+
 ## 4. Who it's for
 
 - **v1 (dogfood):** a technically-capable person (starting with the author)
@@ -72,6 +116,35 @@ to *establish* rather than maintain.
 - **Vision:** non-technical people (section 12). The save-point and undo mental
   model is deliberately legible to non-engineers; that is why the original
   Assumption Inspector began as a visual-design transparency tool.
+
+## 4a. Scope: v1 boundary and sequencing (confirmed 2026-09-12)
+
+Three axes, decided separately so scope creep cannot hide in the merge.
+
+- **User (v1, LOCKED):** the author. A design-literate builder directing a
+  coding/product agent. Dogfoodable today; saves real time on current work, so
+  validation does not wait on recruiting strangers.
+- **Domain (v1):** design-to-code is the **hero**. The agent's interpretation of
+  an *ambiguous visual/UI request* is the star; general code actions (delete,
+  refactor, migrate) are supporting exemplars in the same session timeline.
+  Design requests carry the most hidden assumptions per instruction, which is
+  where the comprehension layer earns its keep, and it is the author's edge.
+- **Surface (v1):** a visual comprehension studio. Visual means *review and
+  correct assumptions*, rendered graphically. This stays B-first (comprehension).
+  It is **not** the spatial-manipulation canvas, which remains v2. Do not let
+  "visual" slide into "drag nodes on a canvas."
+
+**One primitive, sequenced renderers.** The invariant is the DecisionRecord /
+checkpoint (sections 5, 8), surface- and domain-agnostic by design. CLI,
+terminal, and the eventual non-technical visual app are all *renderings* of the
+same object. Build the primitive once; add renderers as they earn their way in
+(section 13). The Claude Code analogy holds only as a *sequence*: TUI first, apps
+after the primitive was proven, never both at once.
+
+**North star (not v1, see section 12):** the non-technical builder who cannot
+read a diff to catch a misread. Larger and more defensible precisely because the
+assumption gap is invisible to them until the result is wrong. It is what the v1
+primitive earns its way toward, not a parallel v1 track.
 
 ## 5. Core concept: the checkpoint / save-point spine (LOCKED)
 
@@ -207,26 +280,33 @@ type DecisionRecord = {
 protocol is not): exact endpoints, event schema, the `approvals`/`run_approval`
 handshake for a third-party client, and client identity/auth.
 
-## 9. First slice (v1): the coding decision loop [CONFIRM scenario]
+## 9. First slice (v1): the design-to-code decision loop [CONFIRM scenario details]
 
-Proposed dogfood scenario: you tell the agent **"clean up the auth module."** v1
-renders that one session as a timeline of checkpoints spanning the tier spectrum:
+Hero domain is design-to-code (section 4a); a code action stays as a supporting
+exemplar. Proposed dogfood scenario: you tell the agent **"make the onboarding
+feel calmer."** v1 renders that one session as a timeline of checkpoints spanning
+the tier spectrum:
 
-- **Low:** edits a comment / markdown. Silent log, free back.
-- **Guarded:** deletes an unused file. Passive notice, back works.
-- **High + wrong assumption (the star):** it read "clean up" as "remove the
-  legacy login flow" and is about to delete three files and a route you did not
-  mean. Low interpretation confidence x high blast radius produces a **blocking
-  decision record**: what it thinks you meant, what it will touch, what is
-  reversible. You **Revise** ("only remove the commented-out block") or **Deny**.
-- **(Optional Critical exemplar):** wants to force-push or run a migration. Hard
-  gate, no back button.
+- **Low:** nudges spacing/token values inside one component. Silent log, free
+  back.
+- **Guarded:** restyles a *shared* component. Passive notice that names the
+  ripple ("this changes the shared Button; 6 screens use it"), back works.
+- **High + wrong assumption (the star):** it read "calmer" as "remove the
+  progress stepper and merge three steps into one screen," a flow/IA change you
+  did not ask for. Low interpretation confidence x high blast radius produces a
+  **blocking decision record**: what it thinks you meant ("calmer = fewer
+  steps"), what it will touch (deletes the stepper, rewrites three routes), what
+  is reversible. You **Revise** ("calmer = more whitespace, softer palette,
+  slower transitions, keep every step") or **Deny**.
+- **(Optional Critical exemplar, code):** wants to run a repo-wide codemod or
+  force-push. Hard gate, no back button.
 
 Plus a **completion receipt** answering four fixed questions: what happened, what
-changed, what left the device and to whom, what can still be undone or revoked.
+changed, which shared components/screens it rippled to, what can still be undone.
 
-Riskiest assumption this tests: that an inspect-before-act stage reads as leverage,
-not friction. Confirm this scenario (or swap the anchor action).
+Riskiest assumption this tests: that an inspect-before-act stage reads as
+leverage, not friction, on exactly the ambiguous *visual* requests where the
+assumption gap is widest. Confirm the anchor request and the tier exemplars.
 
 ## 10. Design principles (wording provisional)
 
@@ -295,7 +375,8 @@ Confirm or adjust the bar.
 
 ## 15. Open questions / punch-list
 
-- [CONFIRM] the v1 coding scenario (section 9).
+- [CONFIRM] the v1 design-to-code scenario details (section 9); hero domain
+  flipped code -> design 2026-09-12, scenario details still open.
 - [CONFIRM] the section 6d floor and where it sits.
 - [CONFIRM] name + core noun: keep "Assumption Inspector," subtitle "decision
   records for consequential agent actions"?

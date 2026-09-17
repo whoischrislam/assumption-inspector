@@ -2,6 +2,52 @@
 
 One line per decision. Dated, with the reason. Don't re-debate unless evidence changes.
 
+## 2026-09-16 — one PRD; A first (editor that applies), B modular after
+
+- **Product fork resolved: A is v1, B is the vision.** The repo had two divergent
+  PRDs (a self-contained design-to-code control plane vs. an agent-oversight
+  comprehension layer that only surfaces) plus a third framing in chat. Chose
+  **A: a self-contained design-to-code editor that interprets NL, reveals the
+  assumptions, lets you accept/reject each, and applies the accepted set as a
+  deterministic surgical patch.** B (oversight layer, runtime adapters, checkpoint
+  taxonomy) is sequenced after A, built on the same primitive. Reason: A is
+  dogfoodable now, closes the loop to real value, and depends on nothing external;
+  B needs unverified runtime wire protocols and is a viewer, not an editor.
+- **Spine locked: Reveal → Decide → Apply**, with an integrity split on Reveal
+  (real/inspectable vs. narrated), per-assumption toggle on Decide (the divergence
+  from Artifacts), and a deterministic patch on Apply (applied == accepted).
+- **Eval + guardrails are acceptance criteria, in the PRD**, not add-ons. Eval
+  scores against the diff (catch rate, noise, faithfulness), seeded from dogfood
+  rejections. Build the eval before the visual UI.
+- **Non-functional: local-first, BYO-key, zero-backend, one command.** No v1
+  feature may require a hosted backend.
+- **Two PRDs collapsed to one** (`docs/PRD.md`). The oversight PRD, with its
+  verified competitive research and provenance, is preserved at
+  `docs/archive/PRD_oversight-layer_2026-09-12.md`. Left uncommitted for review.
+- **M1 anchor locked.** Target = the author's portfolio (`whoischrislam.github.io`);
+  first instruction = "make the company bands feel more premium" (`co-band`),
+  chosen purely-visual so a rough Apply can't touch career facts, with a clean
+  "premium = global theme change" over-reach for the catch demo. Second test =
+  "tighten the hero so it feels more confident" (exercises the facts/copy lock).
+
+## 2026-09-12 — scope confirmed: start-with-me, design-to-code hero
+
+- **v1 user is the author; design-to-code is the hero domain, code oversight is a
+  supporting exemplar.** Confirmed after a competitive verification pass (three
+  parallel searches against primary sources, 2026-09-12). Reason: the
+  differentiated, unoccupied wedge is surfacing the agent's *hidden assumptions*
+  on ambiguous requests; design requests are the richest soil and the author's
+  edge, and the scenario is dogfoodable now. Plan-mode, clarifying-questions,
+  action-approval, and post-hoc-trace spaces are crowded; Kiro and Tessl ($125M)
+  contest the coding-spec flank but punt on hidden assumptions.
+- **Visual surface stays comprehension-only in v1 (B-first).** The
+  spatial-manipulation canvas remains v2. Non-technical builders remain the north
+  star, reached by sequenced renderers over one surface-agnostic primitive, not a
+  parallel v1 track.
+- **PRD updated:** new sections 3a (competitive) and 4a (scope); section 9 hero
+  flipped to a design-to-code loop. Left uncommitted for Chris's post-weekend
+  review.
+
 ## 2026-09-05 — repo setup
 
 - **Name: Assumption Inspector; interaction: X-Ray View.** Clearest framing for an
@@ -85,3 +131,34 @@ One line per decision. Dated, with the reason. Don't re-debate unless evidence c
 - **Surface implication:** the always-on record renders low-fi anywhere (terminal,
   PR comment); the rich browser studio is only needed for opt-in deep review.
   Agents integrate via one MCP server + the brief file — not per-agent plugins.
+
+## 2026-09-05 — product shape (afternoon session after the hackathon)
+
+- **The product is a file contract plus one agent rule; the studio is a viewer.**
+  Three problems (interpretation, authorship, evidence); authorship is the core
+  and is surface-agnostic. Reason: a tool with its own hero is a demo; a tool
+  that reads and writes a file the agent already uses is a tool. See `docs/SCHEMA.md`.
+- **No live previews in v1.** Bad taste is legible in text; previews are a v2
+  evidence upgrade added only if the file-only loop shows text loses decisions.
+- **CLI is the tool call. No MCP, no npm package until pulled.** Claude Code,
+  Codex, and Cursor have a shell; MCP is for agents without one. A package for a
+  status column is ceremony until a second repo consumes it.
+- **A new surface may add no new state.** The studio's own `useState<Session>` is
+  the root cause of web/CLI divergence; fix by making the file the truth.
+- **Design unit is the ask, not the screen.** Five lines rendered identically on
+  every surface. Consent model: proceed-unless-vetoed for high-confidence,
+  low-blast-radius; ask for low-confidence or imagery/copy/color.
+  *Default pending Chris.*
+- **Assumptions and briefs tracked in git under `sessions/`.** *Default pending
+  Chris.* Reason: otherwise "intent survives into the PR" is false.
+- **Restructure code after the interview, docs now.** *Default pending Chris.*
+  Reason: the fixture demo must not break mid-week.
+- **`IMBUE_INTERVIEW_PLAN.md` replaced by `docs/DEVLOG.md`.** Time-boxed plans
+  are log entries, not standalone docs. Event-day playbooks moved to
+  `docs/archive/`.
+- **Docs honesty fix: the fixture is authored, not a Grok Bot transcript.**
+  README, PRODUCT.md, DEMO_SCRIPT, and AGENTS.md corrected. Reason: provenance
+  doc already said so; the other docs had drifted.
+- **This repo is experiment one of a small lab on designing with AI beyond chat.**
+  Rules and template in `docs/DEVLOG.md`. One experiment at a time; killed ones
+  get published.
